@@ -1,9 +1,12 @@
 package com.peak.bean;
 
+import java.util.List;
+
 public class SourceJavaBean {
 	private String sourcePath;
 	private String destPath;
 	private String sourceClassesPath;
+	private List<String> sourceSubClasses;
 	private String destClassPath;
 	public String getSourcePath() {
 		return sourcePath;
@@ -28,5 +31,11 @@ public class SourceJavaBean {
 	}
 	public void setDestClassPath(String destClassPath) {
 		this.destClassPath = destClassPath;
+	}
+	public List<String> getSourceSubClasses() {
+		return sourceSubClasses;
+	}
+	public void setSourceSubClasses(List<String> sourceSubClasses) {
+		this.sourceSubClasses = sourceSubClasses;
 	}
 }

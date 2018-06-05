@@ -1,6 +1,7 @@
 package com.peak.handle.impl;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,6 +114,17 @@ public class PatchHandleService implements IPatchHandle{
 		
 		// copy class file
 		iFileService.copyFile(bean.getSourceClassesPath(), bean.getDestClassPath(), modifyLastUpdateDate);
+		
+		// copy 内部类
+		if(bean.getSourceSubClasses() != null && bean.getSourceSubClasses().size() > 0) {
+			File source = new File(bean.getSourceClassesPath());
+			File dest = new File(bean.getDestClassPath());
+			String sourcePath = source.getParentFile().getAbsolutePath();
+			String destPath = dest.getParentFile().getAbsolutePath();
+			for(String name : bean.getSourceSubClasses()) {
+				iFileService.copyFile(sourcePath + "/" + name, destPath + "/" + name, modifyLastUpdateDate);
+			}
+		}
 	}
 	
 	class FileHanddle implements Callable<Boolean>{
