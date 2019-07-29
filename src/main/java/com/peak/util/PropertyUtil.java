@@ -3,6 +3,11 @@ package com.peak.util;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * 
+ * @author Pan
+ *
+ */
 public class PropertyUtil {
 	private static Properties prop = null; 
 	

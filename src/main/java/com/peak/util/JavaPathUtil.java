@@ -7,6 +7,11 @@ import java.util.List;
 import com.peak.bean.SourceJavaBean;
 import com.peak.common.Constant;
 
+/**
+ * 
+ * @author Pan
+ *
+ */
 public class JavaPathUtil {
 	private static final String JAVA_SUFFIX = ".java";
 	private static final String CLASS_SUFFIX = ".class";
@@ -24,10 +29,10 @@ public class JavaPathUtil {
 		//2. 找到源目标地址
 		String rootPath = getRootPath(project);
 		String relativePath = PathUtil.getRelativePath(rootPath, filePath);
-		bean.setDestPath(PathUtil.patchDest +"/"+ project +"/"+ Constant.PatchSource.SRC + "/" + relativePath);
+		bean.setDestPath(PathUtil.PATCH_DEST +"/"+ project +"/"+ Constant.PatchSource.SRC + "/" + relativePath);
 		//3. 找到对应的源class地址
 		bean.setSourceClassesPath(findClassPath(project, relativePath));
-		//4. 找到对应目示class地址
+		//4. 找到对应目标class地址
 		bean.setDestClassPath(PathUtil.generateDestPath(bean.getSourceClassesPath(), project));
 		//5. 找到对应的内部类
 		bean.setSourceSubClasses(findSourceSubClasses(bean.getSourceClassesPath()));
@@ -38,10 +43,14 @@ public class JavaPathUtil {
 		List<String> list = new ArrayList<String>();
 		File file = new File(sourceClassesPath);
 		String name = file.getName().substring(0, file.getName().lastIndexOf("."));
+		try {
 		for(File item : file.getParentFile().listFiles()) {
 			if(item.getName().startsWith(name + SYMBOL)) {
 				list.add(item.getName());
 			}
+		}
+		}catch (Exception e) {
+			System.out.println(file.getAbsolutePath());
 		}
 		return list;
 	}
@@ -53,12 +62,18 @@ public class JavaPathUtil {
 	}
 
 	private static String getRootPath(String project) {
-		return PathUtil.projectPath + "/" +project +"/"+ Constant.RootPath.SOURCE_ROOT;
+		String mavenRoot = getMavenRootPath(project);
+		if(mavenRoot != null) {
+			return PathUtil.PROJECT_PATH + "/" +project +"/"+ mavenRoot + Constant.RootPath.MAVEN_SOURCE_ROOT;
+		}
+		return PathUtil.PROJECT_PATH + "/" +project +"/"+ Constant.RootPath.SOURCE_ROOT;
 	}
 	
 	private static boolean checkSourceFile(String filePath, String project) {
 		File file = new File(getRootPath(project));
-		if(filePath.contains(file.getAbsolutePath())) return true;
+		if(filePath.contains(file.getAbsolutePath())) {
+			return true;
+		}
 		return false;
 	}
 	
@@ -68,8 +83,19 @@ public class JavaPathUtil {
 
 	public static boolean isJavaSourceFolder(String absolutePath, String project) {
 		File file = new File(getRootPath(project));
-		if(absolutePath.contains(file.getAbsolutePath())) return true;
+		if(absolutePath.contains(file.getAbsolutePath())) {
+			return true;
+		}
 		return false;
+	}
+	
+	public static String getMavenRootPath(String project) {
+		File file = new File(PathUtil.PROJECT_PATH + "/" +project +"/" + Constant.MAVEN_SYMBOL_MAIN_ROOT);
+		if(file.exists()) {
+			return Constant.MAVEN_SYMBOL_MAIN_ROOT;
+		}
+		return null;
+		
 	}
 	
 }

@@ -25,7 +25,9 @@ public class FileServiceImpl implements IFileService{
 		}
 		try {
 			FileUtils.copyFile(sourceFile, destFile);
-			if(modifyDate) destFile.setLastModified(new Date().getTime());
+			if(modifyDate) {
+				destFile.setLastModified(System.currentTimeMillis());
+			}
 			logger.debug(String.format("[success] copy file to ==> %s", destFile));
 		} catch (IOException e) {
 			logger.debug(String.format("[fail] copy file to ==> %s", destFile));
@@ -37,9 +39,13 @@ public class FileServiceImpl implements IFileService{
 
 	@Override
 	public boolean copyJavaFile(String source, String... dests) {
-		if(dests == null) return false;
+		if(dests == null) {
+			return false;
+		}
 		for(String dest : dests) {
-			if(!copyFile(source, dest)) return false;
+			if(!copyFile(source, dest)) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -50,7 +56,9 @@ public class FileServiceImpl implements IFileService{
 			try {
 				FileUtils.forceDelete(new File(path));
 			} catch (IOException e) {
-				if(e instanceof java.io.FileNotFoundException) return true;
+				if(e instanceof java.io.FileNotFoundException) {
+					return true;
+				}
 				logger.error(String.format("删除文件失败, 路径:%s", path) ,e);
 				return false;
 			}

@@ -2,6 +2,11 @@ package com.peak.bean;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Pan
+ *
+ */
 public class SourceJavaBean {
 	private String sourcePath;
 	private String destPath;

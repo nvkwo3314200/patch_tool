@@ -15,9 +15,13 @@ public class NameFileter implements FileFilter{
 	
 	@Override
 	public boolean access(File file) {
-		if(DENY_FILES == null) return true;
+		if(DENY_FILES == null) {
+			return true;
+		}
 		for(String item : DENY_FILES) {
-			if(file.getName().endsWith(item)) return false;
+			if(file.getName().endsWith(item)) {
+				return false;
+			}
 		}
 		return true;
 	}
