@@ -26,6 +26,12 @@ public class DateUtils {
 		}
 		return null;
 	}
+
+	public static String format(Date date) {
+		if(date == null) return null;
+		SimpleDateFormat sdf = new SimpleDateFormat(NORAML_FORMAT);
+		return sdf.format(date);
+	}
 	
 	public static void main(String[] args) {
 		String time = "2018-09-11 12:00:00";

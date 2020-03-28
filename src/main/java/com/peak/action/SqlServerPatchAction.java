@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 把目标文件夹的sql在db中执行
+ */
 public class SqlServerPatchAction {
     private static final Logger logger = Logger.getLogger(SqlServerPatchAction.class);
     private static String filePath = PropertyUtil.getValue("sqlServer.script.dir");

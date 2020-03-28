@@ -1,13 +1,13 @@
 package com.peak.util;
 
+import com.peak.db.DBObjectBean;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JDBCUtil {
     private static final Logger logger = Logger.getLogger(JDBCUtil.class);
@@ -51,6 +51,31 @@ public class JDBCUtil {
                 logger.error(e.getMessage());
             }
         });
+    }
+
+    public static List<DBObjectBean> queryDBObject(String sql) {
+        List<Connection> connList = getConnection();
+        List<DBObjectBean> list = new ArrayList<>();
+        Connection conn = null;
+        if(connList.size() > 0) {
+            conn = connList.get(connList.size() - 1);
+        }
+        if(conn != null) {
+            try (Statement smt = conn.createStatement();
+                ResultSet rs = smt.executeQuery(sql);){
+                while (rs.next()) {
+                    DBObjectBean bean = new DBObjectBean();
+                    bean.setName(rs.getString("name").trim());
+                    bean.setContentText(rs.getString("definition").trim());
+                    bean.setLastUpdateTime(rs.getTimestamp("modify_date"));
+                    bean.setType(rs.getString("type").trim());
+                    list.add(bean);
+                }
+            } catch (Exception e) {
+                logger.error("{}", e);
+            }
+        }
+        return list;
     }
 
     public static void release() {

@@ -21,6 +21,10 @@ public class PathUtil {
 		PATCH_DEST = PropertyUtil.getValue("patch.dest");
 //		projects = StringUtils.split(PropertyUtil.getValue("project.name"), Constant.SEPARATOR);
 	}
+
+	public static String generatePatchPath(String subPath) {
+		return PATCH_DEST + "/" +subPath;
+	}
 	
 	public static String generateDestPath(String filePath, String project) {
 		String rootPath = getWebRootPath(project);
