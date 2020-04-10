@@ -1,7 +1,8 @@
 package com.peak.db;
 
 public enum ObjectEnum {
-    Function("function", "IF", "函数"),
+    Function("function", "IF", "表值函数"),
+    Function2("function", "FN", "标量值函数"),
     View("view", "V", "视图"),
     Table("table", "U", "表"),
     Package("package", "PK", "包"),

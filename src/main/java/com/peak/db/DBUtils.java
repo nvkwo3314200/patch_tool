@@ -30,6 +30,7 @@ public class DBUtils {
         Date date = DateUtils.parse(PropertyUtil.getValue("sqlServer.effDate"));
         param.setLastUpdateTime(date);
         param.setTypeList(new ArrayList<>());
+        param.getTypeList().add(ObjectEnum.Function2);
         param.getTypeList().add(ObjectEnum.Function);
         param.getTypeList().add(ObjectEnum.Trigger);
         param.getTypeList().add(ObjectEnum.Procedure);
