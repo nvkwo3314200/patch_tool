@@ -20,14 +20,17 @@ public class DBUtils {
     private static final String DROP_TEMPLAT = "if exists(select * from sys.all_objects where name='%s')\n" +
             "drop %s dbo.%s;\n" +
             "go";
+    private static boolean changeToActualModifyDate;
     private static DBService service = null;
     static {
-       service = new SqlserverService();
+        service = new SqlserverService();
+        changeToActualModifyDate = String.valueOf(Boolean.FALSE).equalsIgnoreCase(PropertyUtil.getValue("modify_date"));
     }
 
     public static void generatePatchFile() {
         QueryParam param = new QueryParam();
         Date date = DateUtils.parse(PropertyUtil.getValue("sqlServer.effDate"));
+        param.setObjName(PropertyUtil.getValue("sqlServer.obj.name"));
         param.setLastUpdateTime(date);
         param.setTypeList(new ArrayList<>());
         param.getTypeList().add(ObjectEnum.Function2);
@@ -55,13 +58,25 @@ public class DBUtils {
             resetContentText(item);
             try {
                 FileUtils.write(file, item.getContentText());
-                if(item.getLastUpdateTime() != null) {
+                if(item.getLastUpdateTime() != null && changeToActualModifyDate) {
                     file.setLastModified(item.getLastUpdateTime().getTime());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+        if(Boolean.TRUE.toString().toLowerCase().equals(PropertyUtil.getValue("write.onefile"))) {
+            File oneFile = new File(path + "all_script" + System.currentTimeMillis() + SUBFIX);
+            for(File file : patchDir.listFiles()) {
+                try {
+                    String content = FileUtils.readFileToString(file, "UTF-8");
+                    FileUtils.write(oneFile, content, true);
+                    FileUtils.write(oneFile, "\ngo\n\n", true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private static void resetContentText(DBObjectBean item) {

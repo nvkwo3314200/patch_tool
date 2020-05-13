@@ -59,6 +59,7 @@ public class JDBCUtil {
         Connection conn = null;
         if(connList.size() > 0) {
             conn = connList.get(connList.size() - 1);
+//            conn = connList.get(0);
         }
         if(conn != null) {
             try (Statement smt = conn.createStatement();

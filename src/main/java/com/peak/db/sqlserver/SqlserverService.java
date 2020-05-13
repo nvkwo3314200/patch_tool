@@ -26,9 +26,16 @@ public class SqlserverService implements DBService {
         sb.append("INNER JOIN sys.all_objects AS o ON m.object_id = o.object_id ");
         sb.append("WHERE o.[type] in ");
         sb.append(getObjectType(queryParam.getTypeList()));
-        sb.append("and o.modify_date >= '");
-        sb.append(DateUtils.format(queryParam.getLastUpdateTime()));
-        sb.append("' ");
+        if(queryParam.getLastUpdateTime() != null) {
+            sb.append("and o.modify_date >= '");
+            sb.append(DateUtils.format(queryParam.getLastUpdateTime()));
+            sb.append("' ");
+        }
+        if(StringUtils.isNotEmpty(queryParam.getObjName())) {
+            sb.append(" and o.name like '%");
+            sb.append(queryParam.getObjName().trim());
+            sb.append("%'");
+        }
         System.out.println(sb);
         return sb.toString();
     }
