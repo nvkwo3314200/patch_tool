@@ -48,6 +48,7 @@ public class DBUtils {
         String path = PathUtil.generatePatchPath("script/");
         File patchDir = new File(path);
         patchDir.mkdirs();
+        logger.info("path=" + patchDir.getAbsolutePath());
         try {
             FileUtils.deleteDirectory(patchDir);
             patchDir.mkdirs();
