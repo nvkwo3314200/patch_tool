@@ -33,6 +33,7 @@ public class DBUtils {
         param.setObjName(PropertyUtil.getValue("sqlServer.obj.name"));
         param.setLastUpdateTime(date);
         param.setTypeList(new ArrayList<>());
+        param.getTypeList().add(ObjectEnum.Function3);
         param.getTypeList().add(ObjectEnum.Function2);
         param.getTypeList().add(ObjectEnum.Function);
         param.getTypeList().add(ObjectEnum.Trigger);
