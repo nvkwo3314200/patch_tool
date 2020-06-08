@@ -82,23 +82,17 @@ public class PatchHandleService implements IPatchHandle{
 	}
 	
 	private void dealMavenProject(File file, String project, Map<String, Future<Boolean>> map) {
-		File rootFile = new File(file.getAbsolutePath()+"/" + Constant.MAVEN_SYMBOL_MAIN_ROOT);
-		for(File item : rootFile.listFiles()) {
-			if(checkHanddle(item.getName())) {
-				// 用多线程来处理每个project下的根目录下的每个文件夹
-				Callable<Boolean> call = new MavenProjectHandle(project, item.getAbsolutePath());
-				//Callable<Boolean> call = new NormalJavaProjectHandle(project, item.getAbsolutePath());
-				Future<Boolean> task = executor.submit(call);
-				map.put(item.getAbsolutePath(), task);
-			}
-		}
-		
-		File webRootFile = new File(file.getAbsolutePath()+"/" + String.format(Constant.MAVEN_SYMBOL_WEB_ROOT, project));
-		if(webRootFile.exists()) {
-			Callable<Boolean> call = new MavenProjectHandle(project, webRootFile.getAbsolutePath());
-			Future<Boolean> task = executor.submit(call);
-			map.put(webRootFile.getAbsolutePath(), task);
-		}
+		// 用多线程来处理每个project下的根目录下的每个文件夹
+		// 处理target文件夹
+		String targetFilePath = file.getAbsolutePath() + "/target/" + project;
+		Callable<Boolean> call = new NormalJavaProjectHandle(project, targetFilePath);
+		Future<Boolean> task = executor.submit(call);
+		map.put(targetFilePath, task);
+		// 处理src/main/java文件夹, 并copy class文件
+		String javaSourcePath = file.getAbsolutePath() + "/src/main/java";
+		Callable<Boolean> callJava = new NormalJavaProjectHandle(project, javaSourcePath);
+		Future<Boolean> taskJava = executor.submit(callJava);
+		map.put(javaSourcePath, taskJava);
 	}
 
 	private void dealNormalProject(File file, String project, Map<String, Future<Boolean>> map) {

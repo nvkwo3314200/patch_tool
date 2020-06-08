@@ -18,6 +18,6 @@ public class MainAction {
 		IPatchHandle handle = new PatchHandleService();
 		handle.handle();
 		File file=new File(PropertyUtil.getValue("patch.dest"));
-		java.awt.Desktop.getDesktop().open(file.getParentFile());
+		java.awt.Desktop.getDesktop().open(file);
 	}
 }
