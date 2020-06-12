@@ -11,7 +11,8 @@ public class Constant {
 	public static final String SEPARATOR = ",";
 	public static final String MAVEN_SYMBOL_WEB_ROOT= "target/%s";
 	public static final String MAVEN_SYMBOL_MAIN_ROOT= "/src/main/";
-	
+	public static final String MAVEN_SYMBOL_TARGET_CLASS_ROOT= "/classes/";
+
 	public interface RootPath {
 		String WEB_CONTENT = "WebContent";
 		String WEB_ROOT = "WebRoot";

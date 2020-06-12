@@ -58,6 +58,9 @@ public class JavaPathUtil {
 	private static String findClassPath(String project, String relativePath) {
 		String webRootPath = PathUtil.getWebRootPath(project);
 		String classRelativePath = relativePath.replaceAll(JAVA_SUFFIX, CLASS_SUFFIX);
+		if(PathUtil.isMavenProject(project) && !PathUtil.isMavenWebProject(project)) {
+			return 	webRootPath + classRelativePath;
+		}
 		return webRootPath + CENTER_FOLDER + classRelativePath;
 	}
 

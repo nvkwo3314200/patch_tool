@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -52,12 +50,16 @@ public class PatchHandleService implements IPatchHandle{
 				logger.info(String.format("[fail] 项目  %s 不存在", project));
 				continue ;
 			}
-			boolean isMaven = checkMaven(project);
+			boolean isMaven = PathUtil.isMavenProject(project);
 			// delete old patch
 			iFileService.deleteFile(PathUtil.PATCH_DEST + "/" + project);
 			
 			if(isMaven) {
-				dealMavenProject(file, project, map);
+				if(PathUtil.isMavenWebProject(project)) {
+					dealMavenWebProject(file, project, map);
+				} else {
+					dealMavenProject(file, project, map);
+				}
 			} else {
 				dealNormalProject(file, project, map);
 			}
@@ -80,8 +82,22 @@ public class PatchHandleService implements IPatchHandle{
 			executor.shutdown();
 		}
 	}
-	
+
 	private void dealMavenProject(File file, String project, Map<String, Future<Boolean>> map) {
+		// 用多线程来处理每个project下的根目录下的每个文件夹
+		// 处理target文件夹
+		String targetFilePath = file.getAbsolutePath() + "/target/classes";
+		Callable<Boolean> call = new NormalJavaProjectHandle(project, targetFilePath);
+		Future<Boolean> task = executor.submit(call);
+		map.put(targetFilePath, task);
+		// 处理src/main/java文件夹, 并copy class文件
+		String javaSourcePath = file.getAbsolutePath() + "/src/main/java";
+		Callable<Boolean> callJava = new NormalJavaProjectHandle(project, javaSourcePath);
+		Future<Boolean> taskJava = executor.submit(callJava);
+		map.put(javaSourcePath, taskJava);
+	}
+
+	private void dealMavenWebProject(File file, String project, Map<String, Future<Boolean>> map) {
 		// 用多线程来处理每个project下的根目录下的每个文件夹
 		// 处理target文件夹
 		String targetFilePath = file.getAbsolutePath() + "/target/" + project;
@@ -104,14 +120,6 @@ public class PatchHandleService implements IPatchHandle{
 				map.put(item.getAbsolutePath(), task);
 			}
 		}
-	}
-
-	private boolean checkMaven(String project) {
-		File file = new File(PathUtil.PROJECT_PATH + "/" +project + "/" + String.format(Constant.MAVEN_SYMBOL_WEB_ROOT, project));
-		if(file.exists()) {
-			return true;
-		}
-		return false;
 	}
 
 	private boolean checkHanddle(String name) {

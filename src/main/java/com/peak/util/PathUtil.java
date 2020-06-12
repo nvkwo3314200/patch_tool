@@ -47,16 +47,27 @@ public class PathUtil {
 			} else if(StringUtils.equals(child.getName(), Constant.RootPath.WEB_ROOT)){
 				return Constant.RootPath.WEB_ROOT;
 			} else {
-				if(isMavenProject(project)) {
+				if(isMavenWebProject(project)) {
 					return String.format(Constant.MAVEN_SYMBOL_WEB_ROOT, project);
+				} else if(isMavenProject(project)){
+					// maven 普通项目
+					return "/target/" + Constant.MAVEN_SYMBOL_TARGET_CLASS_ROOT;
 				}
 			}
 		}
 		return null;
 	}
 
-	private static boolean isMavenProject(String project) {
+	public static boolean isMavenWebProject(String project) {
 		File file = new File(PROJECT_PATH + "/"  + project + "/" + String.format(Constant.MAVEN_SYMBOL_WEB_ROOT, project));
+		if(file.exists()) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isMavenProject(String project) {
+		File file = new File(PathUtil.PROJECT_PATH + "/" +project + "/target");
 		if(file.exists()) {
 			return true;
 		}
