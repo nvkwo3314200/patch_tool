@@ -40,7 +40,7 @@ public class JavaPathUtil {
 	}
 	
 	private static List<String> findSourceSubClasses(String sourceClassesPath) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		File file = new File(sourceClassesPath);
 		String name = file.getName().substring(0, file.getName().lastIndexOf("."));
 		try {
@@ -74,10 +74,7 @@ public class JavaPathUtil {
 	
 	private static boolean checkSourceFile(String filePath, String project) {
 		File file = new File(getRootPath(project));
-		if(filePath.contains(file.getAbsolutePath())) {
-			return true;
-		}
-		return false;
+		return filePath.contains(file.getAbsolutePath());
 	}
 	
 	public static String getSameJavaPathFromClass(String classPath) {
@@ -86,10 +83,7 @@ public class JavaPathUtil {
 
 	public static boolean isJavaSourceFolder(String absolutePath, String project) {
 		File file = new File(getRootPath(project));
-		if(absolutePath.contains(file.getAbsolutePath())) {
-			return true;
-		}
-		return false;
+		return (absolutePath.contains(file.getAbsolutePath()));
 	}
 	
 	public static String getMavenRootPath(String project) {

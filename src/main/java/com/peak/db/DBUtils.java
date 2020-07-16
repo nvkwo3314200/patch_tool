@@ -20,8 +20,8 @@ public class DBUtils {
     private static final String DROP_TEMPLAT = "if exists(select * from sys.all_objects where name='%s')\n" +
             "drop %s dbo.%s;\n" +
             "go";
-    private static boolean changeToActualModifyDate;
-    private static DBService service = null;
+    private static final boolean changeToActualModifyDate;
+    private static final DBService service;
     static {
         service = new SqlserverService();
         changeToActualModifyDate = String.valueOf(Boolean.FALSE).equalsIgnoreCase(PropertyUtil.getValue("modify_date"));
@@ -31,6 +31,7 @@ public class DBUtils {
         QueryParam param = new QueryParam();
         Date date = DateUtils.parse(PropertyUtil.getValue("sqlServer.effDate"));
         param.setObjName(PropertyUtil.getValue("sqlServer.obj.name"));
+        param.setContent(PropertyUtil.getValue("sqlServer.obj.content"));
         param.setLastUpdateTime(date);
         param.setTypeList(new ArrayList<>());
         param.getTypeList().add(ObjectEnum.Function3);

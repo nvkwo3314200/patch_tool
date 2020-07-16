@@ -18,13 +18,13 @@ import com.peak.util.DateUtils;
 import com.peak.util.PropertyUtil;
 
 public abstract class AbstractProjectHandle implements IProjectHanddle, Callable<Boolean> {
-	protected String project;
-	protected String rootPath;
-	protected String[] patchSources;
-	protected String[] projects;
-	protected IFileService iFileService = FileServiceHelper.getFileService();
-	protected boolean modifyLastUpdateDate;
-	protected FileFilter filter;
+	protected final String project;
+	private final String rootPath;
+	protected final String[] patchSources;
+	protected final String[] projects;
+	protected final IFileService iFileService = FileServiceHelper.getFileService();
+	protected final boolean modifyLastUpdateDate;
+	protected final FileFilter filter;
 	
 	public AbstractProjectHandle(String project, String rootPath) {
 		this.project = project;
@@ -47,7 +47,7 @@ public abstract class AbstractProjectHandle implements IProjectHanddle, Callable
 	}
 	
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call(){
 		dealFiles(rootPath);
 		return true;
 	}

@@ -19,20 +19,19 @@ public class MyThreadPool {
 	/**
 	 * 设置核心池大小 
 	 */
-    int corePoolSize = 5;
+	final int corePoolSize = 5;
 
-    /** 设置线程池最大能接受多少线程 */
-
+    /* 设置线程池最大能接受多少线程 */
     /** 当前线程数大于corePoolSize、小于maximumPoolSize时，超出corePoolSize的线程数的生命周期 */
-    long keepActiveTime = 200;
+	final long keepActiveTime = 200;
 
     /** 设置时间单位，秒 */
-    TimeUnit timeUnit = TimeUnit.SECONDS;
+	final TimeUnit timeUnit = TimeUnit.SECONDS;
 
     /** 设置线程池缓存队列的排队策略为FIFO，并且指定缓存队列大小为5 */
-    BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(5);
+	final BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(5);
 
-	private int maximumPoolSize = 200;
+	private final int maximumPoolSize = 200;
 
     //创建ThreadPoolExecutor线程池对象，并初始化该对象的各种参数
     //ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize , keepActiveTime, timeUnit,workQueue);

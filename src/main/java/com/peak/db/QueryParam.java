@@ -6,6 +6,7 @@ import java.util.List;
 public class QueryParam {
     private Date lastUpdateTime;
     private String objName;
+    private String content;
     private List<ObjectEnum> typeList;
 
     public Date getLastUpdateTime() {
@@ -30,5 +31,13 @@ public class QueryParam {
 
     public void setObjName(String objName) {
         this.objName = objName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

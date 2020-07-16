@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class SqlServerPatchAction {
     private static final Logger logger = Logger.getLogger(SqlServerPatchAction.class);
-    private static String filePath = PropertyUtil.getValue("sqlServer.script.dir");
-    public static void main(String[] args) throws IOException {
+    private static final String filePath = PropertyUtil.getValue("sqlServer.script.dir");
+    public static void main(String[] args) {
         runScript();
     }
     public static void runScript() {

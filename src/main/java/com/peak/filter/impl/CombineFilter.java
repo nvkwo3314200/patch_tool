@@ -5,7 +5,7 @@ import java.io.File;
 import com.peak.filter.FileFilter;
 
 public class CombineFilter implements FileFilter{
-	FileFilter[] list = null;
+	private FileFilter[] list = null;
 	
 	public CombineFilter(FileFilter...fileFilters ) {
 		this.list = fileFilters;

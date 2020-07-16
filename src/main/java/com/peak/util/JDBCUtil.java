@@ -13,7 +13,7 @@ public class JDBCUtil {
     private static final Logger logger = Logger.getLogger(JDBCUtil.class);
     private static List<Connection> connList;
 
-    public static final List<Connection> getConnection() {
+    public static List<Connection> getConnection() {
         if(connList == null) {
             connList = new ArrayList<>();
             try {
@@ -63,7 +63,7 @@ public class JDBCUtil {
         }
         if(conn != null) {
             try (Statement smt = conn.createStatement();
-                ResultSet rs = smt.executeQuery(sql);){
+                ResultSet rs = smt.executeQuery(sql)){
                 while (rs.next()) {
                     DBObjectBean bean = new DBObjectBean();
                     bean.setName(rs.getString("name").trim());

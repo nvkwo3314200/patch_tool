@@ -18,14 +18,16 @@ public enum ObjectEnum {
     User("user", "USER", "用户"),
     Materialized_View("materialized view", "MV", "物化视图"),
     ;
-    private ObjectEnum(String name, String code, String desc) {
+
+    ObjectEnum(String name, String code, String desc) {
         this.name = name;
         this.code = code;
         this.desc = desc;
     }
-    private String name;
-    private String code;
-    private String desc;
+
+    private final String name;
+    private final String code;
+    private final String desc;
 
     public String getName() {
         return name;

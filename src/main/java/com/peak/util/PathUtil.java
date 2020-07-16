@@ -60,18 +60,12 @@ public class PathUtil {
 
 	public static boolean isMavenWebProject(String project) {
 		File file = new File(PROJECT_PATH + "/"  + project + "/" + String.format(Constant.MAVEN_SYMBOL_WEB_ROOT, project));
-		if(file.exists()) {
-			return true;
-		}
-		return false;
+		return file.exists();
 	}
 
 	public static boolean isMavenProject(String project) {
 		File file = new File(PathUtil.PROJECT_PATH + "/" +project + "/target");
-		if(file.exists()) {
-			return true;
-		}
-		return false;
+		return file.exists();
 	}
 
 	public static String getRelativePath(String rootPath, String filePath) {

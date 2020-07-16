@@ -26,12 +26,12 @@ import com.peak.util.PropertyUtil;
  */
 public class PatchHandleService implements IPatchHandle{
 	private static final Logger logger = Logger.getLogger(PatchHandleService.class);
-	IFileService iFileService;
+	final IFileService iFileService;
 	boolean isMaven = false;
-	private String[] projects;
-	boolean modifyLastUpdateDate;
+	private final String[] projects;
+	final boolean modifyLastUpdateDate;
 	Map<String, Boolean> mavenTypeMap = new HashMap<>();
-	ExecutorService executor =  MyThreadPool.getInstance().getThreadPool();  
+	final ExecutorService executor =  MyThreadPool.getInstance().getThreadPool();
 	
 	public PatchHandleService() {
 		super();
@@ -123,13 +123,10 @@ public class PatchHandleService implements IPatchHandle{
 	}
 
 	private boolean checkHanddle(String name) {
-		if(Constant.RootPath.SOURCE_ROOT.equals(name) ||
+		return (Constant.RootPath.SOURCE_ROOT.equals(name) ||
 		   Constant.RootPath.WEB_CONTENT.equals(name) ||
 		   Constant.RootPath.MAVEN_SOURCE_ROOT.equals(name) ||
-		   Constant.RootPath.WEB_ROOT.equals(name)) { 
-			return true;
-		}
-		return false;
+		   Constant.RootPath.WEB_ROOT.equals(name));
 	}
 	
 }

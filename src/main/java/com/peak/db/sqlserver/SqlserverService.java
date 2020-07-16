@@ -36,6 +36,11 @@ public class SqlserverService implements DBService {
             sb.append(queryParam.getObjName().trim());
             sb.append("%'");
         }
+        if(StringUtils.isNotEmpty(queryParam.getContent())) {
+            sb.append(" and m.definition like '%");
+            sb.append(queryParam.getContent().trim());
+            sb.append("%'");
+        }
         System.out.println(sb);
         return sb.toString();
     }

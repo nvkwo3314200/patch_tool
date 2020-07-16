@@ -9,7 +9,7 @@ import java.util.Properties;
  *
  */
 public class PropertyUtil {
-	private static Properties prop = null; 
+	private static final Properties prop;
 	
 	static {
 		prop = new Properties();
@@ -20,7 +20,7 @@ public class PropertyUtil {
 		}
 	}
 	
-	public static final String getValue(String key) {
+	public static String getValue(String key) {
 		return prop.getProperty(key);
 	}
 	

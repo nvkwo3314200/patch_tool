@@ -20,9 +20,7 @@ public class TimeFileter implements FileFilter {
 	@Override
 	public boolean access(File file) {
 		if(file.lastModified() > accessDate.getTime()) {
-			if(limitDate == null || file.lastModified() <= limitDate.getTime()) {
-				return true;
-			}
+			return (limitDate == null || file.lastModified() <= limitDate.getTime());
 		}
 		return false;
 	}
